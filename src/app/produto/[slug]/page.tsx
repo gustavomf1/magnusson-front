@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Script from "next/script";
 import { Footer } from "@/components/landing-page";
 import { ProductScreen } from "@/components/product-screen";
-import { getIcon } from "@/lib/icon-map";
 import { getProduct } from "@/lib/products";
 
 export const revalidate = 60;
@@ -77,7 +76,7 @@ export default async function ProdutoPage({ params }: ProductPageProps) {
 
   return (
     <>
-      <ProductScreen produto={produto} getIcon={getIcon} />
+      <ProductScreen produto={produto} />
       <Footer />
       <Script id="product-jsonld-slug" type="application/ld+json">
         {JSON.stringify(getProductJsonLd(produto))}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Minus, Plus, Ruler, ShoppingBag, Truck, type LucideIcon } from "lucide-react";
+import { Minus, Plus, Ruler, ShoppingBag, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -8,6 +8,7 @@ import { useCart } from "@/components/cart-context";
 import { Button, Eyebrow, Flourish, Selo } from "@/components/primitives";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import { getIcon } from "@/lib/icon-map";
 import type { Produto } from "@/types/product";
 
 type ShippingQuote = {
@@ -17,10 +18,9 @@ type ShippingQuote = {
 
 type ProductScreenProps = {
   produto: Produto;
-  getIcon: (name: string) => LucideIcon;
 };
 
-export function ProductScreen({ produto, getIcon }: ProductScreenProps) {
+export function ProductScreen({ produto }: ProductScreenProps) {
   const images = produto.imagens
     .slice()
     .sort((a, b) => a.ordem - b.ordem);
