@@ -1,0 +1,316 @@
+/* ============================================================
+   MAGNOSSÃO — Design Tokens
+   Raiz nórdica. Alma brasileira.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ----------------------------------------------------------
+     CORE COLOR PALETTE (from paleta de cores.jpeg)
+     ---------------------------------------------------------- */
+  --magn-navy:          #0B1F3A;   /* Azul Marinho — primary brand */
+  --magn-gold:          #D4AF37;   /* Dourado — CTA/accent */
+  --magn-forest:        #1E3A2A;   /* Verde Floresta */
+  --magn-black:         #111111;   /* Preto */
+  --magn-white:         #F5F5F5;   /* Branco — clean fields */
+  --magn-sand:          #D8C7AE;   /* Bege Areia */
+  --magn-wine:          #7A1E23;   /* Vinho — campaigns/special */
+
+  /* Support neutrals */
+  --magn-graphite:      #2A2A2A;   /* Cinza Grafite — cards, footer */
+  --magn-text-mute:     #666666;   /* Cinza Texto */
+  --magn-offwhite:      #F8F6F0;   /* Off-white premium */
+
+  /* Gold variants */
+  --magn-gold-deep:     #B89126;   /* hover state, embroidery shadow */
+  --magn-gold-soft:     #E6C76A;   /* highlight, foil rim */
+  --magn-gold-faint:    rgba(212,175,55,0.18);
+
+  /* Navy variants */
+  --magn-navy-deep:     #061226;   /* darker — velvet shadow */
+  --magn-navy-tint:     #15315A;   /* hover/elevation on navy */
+  --magn-navy-line:     rgba(212,175,55,0.32); /* gold hairline on navy */
+
+  /* Surface tokens */
+  --magn-surface-page:        var(--magn-offwhite);
+  --magn-surface-page-alt:    var(--magn-white);
+  --magn-surface-premium:     var(--magn-navy);
+  --magn-surface-premium-alt: var(--magn-navy-deep);
+  --magn-surface-card:        #FFFFFF;
+  --magn-surface-card-dark:   var(--magn-graphite);
+  --magn-divider:             rgba(17,17,17,0.08);
+  --magn-divider-on-dark:     rgba(212,175,55,0.22);
+
+  /* Foreground tokens (on light) */
+  --magn-fg-1:          var(--magn-black);        /* primary text */
+  --magn-fg-2:          #2A2A2A;                  /* secondary */
+  --magn-fg-3:          var(--magn-text-mute);    /* muted/meta */
+  --magn-fg-link:       var(--magn-navy);
+
+  /* Foreground tokens (on dark) */
+  --magn-fg-on-dark-1:  var(--magn-offwhite);
+  --magn-fg-on-dark-2:  #C9CFD8;
+  --magn-fg-on-dark-3:  #8A93A0;
+  --magn-fg-on-dark-accent: var(--magn-gold);
+
+  /* Semantic */
+  --magn-success:       #2F6B4A;
+  --magn-warning:       var(--magn-gold);
+  --magn-danger:        var(--magn-wine);
+  --magn-info:          var(--magn-navy-tint);
+
+  /* ----------------------------------------------------------
+     TYPOGRAPHY FAMILIES
+     - display-rune  : "Heritage rune" angular display (used sparingly,
+                       for hero headlines, tags, packaging-style accents).
+                       FONT FILE NOT YET PROVIDED — substituted with
+                       Cinzel 800/900 letter-spaced as the closest free
+                       fallback; flag for replacement.
+     - display       : Premium classical serif — used for the wordmark,
+                       page H1/H2 and editorial section titles.
+                       Cinzel (Google Fonts).
+     - editorial     : Soft serif for long-form / story passages.
+                       Cormorant Garamond.
+     - body          : Clean grotesque for UI and reading copy.
+                       Inter.
+     - ui            : Slightly tighter sans for buttons/labels/admin.
+                       Montserrat.
+     ---------------------------------------------------------- */
+  --font-display-rune: "Cinzel", "Trajan Pro", "Marcellus", serif;
+  --font-display:      "Cinzel", "Trajan Pro", "Marcellus", "Times New Roman", serif;
+  --font-editorial:    "Cormorant Garamond", "Lora", Georgia, serif;
+  --font-body:         "Inter", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-ui:           "Montserrat", "Inter", system-ui, sans-serif;
+
+  /* Type scale (rem) */
+  --fs-display-xl: 5.5rem;   /* 88px hero */
+  --fs-display-l:  4rem;     /* 64px */
+  --fs-h1:         3rem;     /* 48px */
+  --fs-h2:         2.25rem;  /* 36px */
+  --fs-h3:         1.625rem; /* 26px */
+  --fs-h4:         1.25rem;  /* 20px */
+  --fs-lead:       1.125rem; /* 18px */
+  --fs-body:       1rem;     /* 16px */
+  --fs-small:      0.875rem; /* 14px */
+  --fs-micro:      0.75rem;  /* 12px */
+
+  /* Line height */
+  --lh-tight:     1.05;
+  --lh-snug:      1.2;
+  --lh-normal:    1.5;
+  --lh-relaxed:   1.65;
+
+  /* Letter spacing */
+  --ls-display-rune: 0.14em;  /* very wide caps for rune-style headlines */
+  --ls-display:      0.06em;  /* Cinzel caps */
+  --ls-ui-caps:      0.18em;  /* tiny eyebrow caps */
+  --ls-ui:           0.02em;
+  --ls-tight:        0;
+
+  /* ----------------------------------------------------------
+     SPACING (4-step base)
+     ---------------------------------------------------------- */
+  --s-0:   0;
+  --s-1:   4px;
+  --s-2:   8px;
+  --s-3:   12px;
+  --s-4:   16px;
+  --s-5:   20px;
+  --s-6:   24px;
+  --s-7:   32px;
+  --s-8:   40px;
+  --s-9:   56px;
+  --s-10:  72px;
+  --s-11:  96px;
+  --s-12:  128px;
+
+  /* ----------------------------------------------------------
+     RADII — restrained, premium feel
+     ---------------------------------------------------------- */
+  --r-none:  0px;
+  --r-xs:    2px;
+  --r-sm:    4px;
+  --r-md:    6px;     /* default button/input */
+  --r-lg:    10px;    /* cards */
+  --r-xl:    16px;    /* hero panels */
+  --r-pill:  999px;
+
+  /* ----------------------------------------------------------
+     SHADOWS (low-key, never showy)
+     ---------------------------------------------------------- */
+  --shadow-hairline: 0 0 0 1px rgba(17,17,17,0.06);
+  --shadow-card:     0 1px 2px rgba(11,31,58,0.04), 0 8px 24px rgba(11,31,58,0.06);
+  --shadow-card-lg:  0 2px 4px rgba(11,31,58,0.06), 0 24px 48px rgba(11,31,58,0.10);
+  --shadow-foil:     0 1px 0 rgba(255,255,255,0.18) inset, 0 0 0 1px rgba(212,175,55,0.55), 0 8px 24px rgba(11,31,58,0.18);
+  --shadow-dark:     0 1px 2px rgba(0,0,0,0.4), 0 16px 36px rgba(0,0,0,0.35);
+
+  /* Hairlines / borders */
+  --hairline:        1px solid rgba(17,17,17,0.10);
+  --hairline-strong: 1px solid rgba(17,17,17,0.16);
+  --hairline-gold:   1px solid var(--magn-gold);
+  --hairline-gold-soft: 1px solid rgba(212,175,55,0.45);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:      160ms;
+  --dur-base:      240ms;
+  --dur-slow:      420ms;
+}
+
+/* ============================================================
+   SEMANTIC TYPE — drop these classes directly onto elements
+   ============================================================ */
+
+.magn-eyebrow {
+  font-family: var(--font-ui);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-ui-caps);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--magn-gold-deep);
+}
+
+.magn-display-rune {
+  font-family: var(--font-display-rune);
+  font-weight: 800;
+  font-size: var(--fs-display-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-display-rune);
+  text-transform: uppercase;
+}
+
+.magn-h1, h1.magn {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--magn-fg-1);
+}
+
+.magn-h2, h2.magn {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-display);
+  text-transform: uppercase;
+  color: var(--magn-fg-1);
+}
+
+.magn-h3, h3.magn {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.magn-h4, h4.magn {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+  letter-spacing: var(--ls-ui-caps);
+  text-transform: uppercase;
+}
+
+.magn-editorial-lead {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-style: italic;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-relaxed);
+  color: var(--magn-fg-2);
+}
+
+.magn-editorial-quote {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  color: var(--magn-fg-1);
+}
+
+.magn-body, p.magn {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh-relaxed);
+  color: var(--magn-fg-2);
+}
+
+.magn-body-sm {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  line-height: var(--lh-normal);
+  color: var(--magn-fg-3);
+}
+
+.magn-button-label {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: var(--ls-ui-caps);
+  text-transform: uppercase;
+}
+
+.magn-price {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  letter-spacing: 0.02em;
+}
+
+.magn-meta {
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-ui-caps);
+  text-transform: uppercase;
+  color: var(--magn-fg-3);
+}
+
+/* ============================================================
+   BACKGROUND MOTIFS
+   ============================================================ */
+
+.magn-bg-velvet {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 60%),
+    radial-gradient(80% 60% at 100% 100%, rgba(212,175,55,0.04) 0%, transparent 70%),
+    linear-gradient(180deg, var(--magn-navy) 0%, var(--magn-navy-deep) 100%);
+  color: var(--magn-fg-on-dark-1);
+}
+
+.magn-bg-off {
+  background: var(--magn-offwhite);
+}
+
+.magn-bg-sand {
+  background: linear-gradient(180deg, #EDE2CC 0%, var(--magn-sand) 100%);
+}
+
+/* Gold hairline divider, typically with a small diamond */
+.magn-divider-gold {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--magn-gold);
+}
+.magn-divider-gold::before,
+.magn-divider-gold::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--magn-gold), transparent);
+}
+.magn-divider-gold .diamond {
+  width: 6px; height: 6px;
+  transform: rotate(45deg);
+  background: var(--magn-gold);
+}
