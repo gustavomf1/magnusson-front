@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Script from "next/script";
-import { Footer } from "@/components/landing-page";
-import { ProductScreen } from "@/components/product-screen";
-import { getProduct } from "@/lib/products";
+import { Footer } from "@/components/marketing/landing-page";
+import { ProductScreen } from "@/components/catalog/product-screen";
+import { getProduct } from "@/services/products";
 
 export const revalidate = 60;
 

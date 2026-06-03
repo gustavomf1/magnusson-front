@@ -16,7 +16,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ButtonLink, Eyebrow, Flourish, OncaMark, SectionHead, Selo } from "@/components/primitives";
+import { ButtonLink, Eyebrow, Flourish, OncaMark, SectionHead, Selo } from "@/components/ui/primitives";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { ProdutoResumo } from "@/types/product";

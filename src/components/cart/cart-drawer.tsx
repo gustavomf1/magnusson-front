@@ -3,8 +3,8 @@
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCart } from "@/components/cart-context";
-import { Button, OncaMark, Eyebrow } from "@/components/primitives";
+import { useCart } from "@/contexts/cart-context";
+import { Button, OncaMark, Eyebrow } from "@/components/ui/primitives";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/cn";
 

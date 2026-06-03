@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { LandingPage } from "@/components/landing-page";
-import { getProducts } from "@/lib/products";
+import { LandingPage } from "@/components/marketing/landing-page";
+import { getProducts } from "@/services/products";
 import type { ProdutoResumo } from "@/types/product";
 
 export const revalidate = 60;

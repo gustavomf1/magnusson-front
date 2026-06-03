@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Footer } from "@/components/landing-page";
-import { ButtonLink, Eyebrow, Flourish, OncaMark } from "@/components/primitives";
+import { Footer } from "@/components/marketing/landing-page";
+import { ButtonLink, Eyebrow, Flourish, OncaMark } from "@/components/ui/primitives";
 
 export const metadata: Metadata = {
   title: "Checkout",
