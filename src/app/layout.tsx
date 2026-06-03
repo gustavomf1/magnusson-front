@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { CartDrawer } from '@/components/cart-drawer'
-import { CartProvider } from '@/components/cart-context'
-import { SiteHeader } from '@/components/site-header'
+import { CartDrawer } from '@/components/cart/cart-drawer'
+import { CartProvider } from '@/contexts/cart-context'
+import { SiteHeader } from '@/components/layout/site-header'
 import './globals.css'
 
 export const metadata: Metadata = {

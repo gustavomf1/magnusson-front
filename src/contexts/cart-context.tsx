@@ -1,7 +1,14 @@
 "use client";
 
 import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
-import { product } from "@/data/product";
+
+// Constantes do produto Classic usadas pelo carrinho (UI-only por enquanto).
+const CLASSIC_PRODUCT = {
+  id: "polo-classic",
+  shortName: "Polo Classic",
+  price: 249.9,
+  image: "/assets/polo-classic-flat.png"
+};
 
 export type CartItem = {
   id: string;
@@ -31,7 +38,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [isOpen, setOpen] = useState(false);
 
   const addItem: CartContextValue["addItem"] = (item) => {
-    const id = `${product.id}-${item.color}-${item.size}`;
+    const id = `${CLASSIC_PRODUCT.id}-${item.color}-${item.size}`;
 
     setItems((current) => {
       const existing = current.find((entry) => entry.id === id);
@@ -47,9 +54,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
         {
           ...item,
           id,
-          name: product.shortName,
-          price: product.price,
-          image: "/assets/polo-classic-flat.png"
+          name: CLASSIC_PRODUCT.shortName,
+          price: CLASSIC_PRODUCT.price,
+          image: CLASSIC_PRODUCT.image
         }
       ];
     });

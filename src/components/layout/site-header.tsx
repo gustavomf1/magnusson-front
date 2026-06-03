@@ -4,8 +4,8 @@ import { Menu, ShoppingBag, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useCart } from "@/components/cart-context";
-import { ButtonLink, Wordmark } from "@/components/primitives";
+import { useCart } from "@/contexts/cart-context";
+import { ButtonLink, Wordmark } from "@/components/ui/primitives";
 import { cn } from "@/lib/cn";
 
 const nav = [
