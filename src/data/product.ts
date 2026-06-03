@@ -193,6 +193,72 @@ export const faqs = [
   }
 ];
 
+import type { Produto } from "@/types/product";
+
+const iconNameByComponent = new Map<LucideIcon, string>([
+  [Sparkles, "Sparkles"],
+  [Feather, "Feather"],
+  [Square, "Square"],
+  [MapPin, "MapPin"],
+  [Infinity, "Infinity"]
+]);
+
+// Adapta os dados estáticos da landing para o formato `Produto` da API,
+// permitindo que ClassicPage reaproveite o ProductScreen baseado em API.
+export function getStaticProduto(): Produto {
+  return {
+    id: 0,
+    slug: product.slug,
+    nome: product.name,
+    nomeCurto: product.shortName,
+    colecao: product.collection,
+    preco: product.price,
+    descricao: product.description,
+    descricaoSeo: product.seoDescription,
+    status: "PUBLICADO",
+    imagens: product.images.map((image, index) => ({
+      id: index,
+      url: image.src,
+      alt: image.alt,
+      ordem: index
+    })),
+    cores: colors.map((color, index) => ({
+      id: index,
+      nome: color.name,
+      token: color.token,
+      hex: color.hex
+    })),
+    tamanhos: sizes.map((size, index) => ({
+      id: index,
+      label: size.label,
+      peito: size.chest,
+      comprimento: size.length,
+      ombro: size.shoulder
+    })),
+    skus: [],
+    beneficios: benefits.map((benefit, index) => ({
+      id: index,
+      iconeNome: iconNameByComponent.get(benefit.icon) ?? "Sparkles",
+      titulo: benefit.title,
+      corpo: benefit.body,
+      ordem: index
+    })),
+    detalhes: [],
+    reviews: reviews.map((review, index) => ({
+      id: index,
+      citacao: review.quote,
+      nome: review.name,
+      cidade: review.city
+    })),
+    faqs: faqs.map((faq, index) => ({
+      id: index,
+      pergunta: faq.question,
+      resposta: faq.answer,
+      ordem: index
+    }))
+  };
+}
+
 export function getProductJsonLd(baseUrl = "https://magnossao.com.br") {
   return {
     "@context": "https://schema.org",

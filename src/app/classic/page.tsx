@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Footer } from "@/components/landing-page";
 import { ProductScreen } from "@/components/product-screen";
-import { getProductJsonLd, product } from "@/data/product";
+import { getProductJsonLd, getStaticProduto, product } from "@/data/product";
+import { getIcon } from "@/lib/icon-map";
 
 export const metadata: Metadata = {
   title: product.name,
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
 export default function ClassicPage() {
   return (
     <>
-      <ProductScreen />
+      <ProductScreen produto={getStaticProduto()} getIcon={getIcon} />
       <Footer />
       <Script id="product-jsonld-classic" type="application/ld+json">
         {JSON.stringify(getProductJsonLd())}
