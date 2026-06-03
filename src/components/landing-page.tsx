@@ -8,13 +8,16 @@ import { benefits, colors, details, faqs, product, reviews, sizeGuide } from "@/
 import { ButtonLink, Eyebrow, Flourish, OncaMark, SectionHead, Selo } from "@/components/primitives";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/cn";
+import type { ProdutoResumo } from "@/types/product";
 
-export function LandingPage() {
+export function LandingPage({ produtos = [] }: { produtos?: ProdutoResumo[] }) {
+  const destaque = produtos.find((p) => p.status === "PUBLICADO") ?? produtos[0] ?? null;
+
   return (
     <>
       <Hero />
       <Benefits />
-      <ColorSection />
+      <ColorSection preco={destaque?.preco ?? product.price} />
       <Story />
       <DetailGrid />
       <SizeGuide />
@@ -111,7 +114,7 @@ function Benefits() {
   );
 }
 
-function ColorSection() {
+function ColorSection({ preco }: { preco: number }) {
   return (
     <section className="velvet-surface relative overflow-hidden px-5 py-20 text-offwhite md:px-9 md:py-24">
       <div className="noise-overlay" />
@@ -151,7 +154,7 @@ function ColorSection() {
                   {String(index + 1).padStart(2, "0")}. {color.name}
                 </span>
                 <span className="mt-1 block font-body text-xs text-[#8A93A0]">
-                  {formatCurrency(product.price)}
+                  {formatCurrency(preco)}
                 </span>
               </span>
             </Link>
