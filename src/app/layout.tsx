@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { CartDrawer } from '@/components/cart/cart-drawer'
 import { CartProvider } from '@/contexts/cart-context'
+import { AuthProvider } from '@/contexts/auth-context'
 import { SiteHeader } from '@/components/layout/site-header'
 import './globals.css'
 
@@ -42,11 +43,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pt-BR">
       <body>
-        <CartProvider>
-          <SiteHeader />
-          {children}
-          <CartDrawer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <SiteHeader />
+            {children}
+            <CartDrawer />
+          </CartProvider>
+        </AuthProvider>
         <Script id="organization-jsonld" type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
