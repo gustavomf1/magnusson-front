@@ -26,6 +26,17 @@ export type SkuDto = {
   tamanhoId: number
   codigo: string
   ativo: boolean
+  disponivel: boolean
+}
+
+export type SkuEstoque = {
+  id: number
+  produtoNome: string
+  corNome: string
+  tamanhoLabel: string
+  codigo: string
+  quantidade: number
+  disponivel: boolean
 }
 
 export type BeneficioDto = {
