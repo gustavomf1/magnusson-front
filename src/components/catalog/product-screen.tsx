@@ -1,69 +1,74 @@
-"use client";
+'use client'
 
-import { Minus, Plus, Ruler, ShoppingBag, Truck } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import { useCart } from "@/contexts/cart-context";
-import { Button, Eyebrow, Flourish, Selo } from "@/components/ui/primitives";
-import { formatCurrency } from "@/lib/format";
-import { cn } from "@/lib/cn";
-import { getIcon } from "@/lib/icon-map";
-import type { Produto } from "@/types/product";
+import { Minus, Plus, Ruler, ShoppingBag, Truck } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useMemo, useState } from 'react'
+import { useCart } from '@/contexts/cart-context'
+import { Button, Eyebrow, Flourish, Selo } from '@/components/ui/primitives'
+import { formatCurrency } from '@/lib/format'
+import { cn } from '@/lib/cn'
+import { getIcon } from '@/lib/icon-map'
+import type { Produto } from '@/types/product'
 
 type ShippingQuote = {
-  standard: string;
-  express: string;
-};
+  standard: string
+  express: string
+}
 
 type ProductScreenProps = {
-  produto: Produto;
-};
+  produto: Produto
+}
 
 export function ProductScreen({ produto }: ProductScreenProps) {
-  const images = produto.imagens
-    .slice()
-    .sort((a, b) => a.ordem - b.ordem);
-  const colors = produto.cores;
-  const sizes = produto.tamanhos;
+  const images = produto.imagens.slice().sort((a, b) => a.ordem - b.ordem)
+  const colors = produto.cores
+  const sizes = produto.tamanhos
 
-  const [activeImage, setActiveImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(colors[0]?.nome ?? "");
-  const [selectedSize, setSelectedSize] = useState(sizes[0]?.label ?? "M");
-  const [qty, setQty] = useState(1);
-  const [cep, setCep] = useState("");
-  const [shipping, setShipping] = useState<ShippingQuote | null>(null);
-  const { addItem } = useCart();
+  const [activeImage, setActiveImage] = useState(0)
+  const [selectedColor, setSelectedColor] = useState(colors[0]?.nome ?? '')
+  const [selectedSize, setSelectedSize] = useState(sizes[0]?.label ?? 'M')
+  const [qty, setQty] = useState(1)
+  const [cep, setCep] = useState('')
+  const [shipping, setShipping] = useState<ShippingQuote | null>(null)
+  const { addItem } = useCart()
 
-  const installment = `3× de ${formatCurrency(produto.preco / 3)} sem juros`;
-  const pix = "Pix · 5% de desconto";
+  const selectedCor = colors.find((c) => c.nome === selectedColor)
+  const selectedTamanho = sizes.find((s) => s.label === selectedSize)
+  const selectedSku = produto.skus.find(
+    (s) => s.corId === selectedCor?.id && s.tamanhoId === selectedTamanho?.id && s.ativo
+  )
+  const esgotado = !!selectedCor && !!selectedTamanho && (!selectedSku || !selectedSku.disponivel)
 
-  const active = images[activeImage];
+  const installment = `3× de ${formatCurrency(produto.preco / 3)} sem juros`
+  const pix = 'Pix · 5% de desconto'
 
-  const canCalculate = useMemo(() => cep.replace(/\D/g, "").length >= 8, [cep]);
+  const active = images[activeImage]
+
+  const canCalculate = useMemo(() => cep.replace(/\D/g, '').length >= 8, [cep])
 
   const addToCart = () => {
     addItem({
       color: selectedColor,
       size: selectedSize,
-      qty
-    });
-  };
+      qty,
+    })
+  }
 
   const calculateShipping = () => {
     if (!canCalculate) {
       setShipping({
-        standard: "Informe um CEP com 8 dígitos.",
-        express: "A entrega expressa aparece após um CEP válido."
-      });
-      return;
+        standard: 'Informe um CEP com 8 dígitos.',
+        express: 'A entrega expressa aparece após um CEP válido.',
+      })
+      return
     }
 
     setShipping({
-      standard: "5 a 8 dias úteis · R$ 19,90",
-      express: "2 a 4 dias úteis · R$ 34,90"
-    });
-  };
+      standard: '5 a 8 dias úteis · R$ 19,90',
+      express: '2 a 4 dias úteis · R$ 34,90',
+    })
+  }
 
   return (
     <main className="bg-offwhite px-5 pb-24 pt-32 md:px-9 md:pt-36">
@@ -89,8 +94,8 @@ export function ProductScreen({ produto }: ProductScreenProps) {
                 onClick={() => setActiveImage(index)}
                 aria-label={`Ver imagem ${index + 1}`}
                 className={cn(
-                  "relative aspect-square overflow-hidden rounded-md border-2 bg-navy transition duration-[160ms] ease-magn",
-                  index === activeImage ? "border-gold" : "border-transparent hover:border-gold/60"
+                  'relative aspect-square overflow-hidden rounded-md border-2 bg-navy transition duration-[160ms] ease-magn',
+                  index === activeImage ? 'border-gold' : 'border-transparent hover:border-gold/60'
                 )}
               >
                 <Image src={image.url} alt="" fill sizes="120px" className="object-cover" />
@@ -139,10 +144,10 @@ export function ProductScreen({ produto }: ProductScreenProps) {
                   aria-label={`Selecionar cor ${color.nome}`}
                   title={color.nome}
                   className={cn(
-                    "size-9 rounded-full border transition duration-[160ms] ease-magn",
+                    'size-9 rounded-full border transition duration-[160ms] ease-magn',
                     selectedColor === color.nome
-                      ? "border-gold shadow-[0_0_0_2px_var(--magn-gold),inset_0_0_0_1px_rgba(0,0,0,0.1)]"
-                      : "border-black/15 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]"
+                      ? 'border-gold shadow-[0_0_0_2px_var(--magn-gold),inset_0_0_0_1px_rgba(0,0,0,0.1)]'
+                      : 'border-black/15 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.08)]'
                   )}
                   style={{ backgroundColor: color.hex }}
                 />
@@ -170,10 +175,10 @@ export function ProductScreen({ produto }: ProductScreenProps) {
                   type="button"
                   onClick={() => setSelectedSize(size.label)}
                   className={cn(
-                    "flex size-[50px] items-center justify-center rounded-md border font-ui text-sm font-semibold transition duration-[160ms] ease-magn",
+                    'flex size-[50px] items-center justify-center rounded-md border font-ui text-sm font-semibold transition duration-[160ms] ease-magn',
                     selectedSize === size.label
-                      ? "border-navy bg-navy text-gold"
-                      : "border-black/15 text-black hover:border-navy"
+                      ? 'border-navy bg-navy text-gold'
+                      : 'border-black/15 text-black hover:border-navy'
                   )}
                 >
                   {size.label}
@@ -208,12 +213,24 @@ export function ProductScreen({ produto }: ProductScreenProps) {
           </div>
 
           <div className="mb-8 grid gap-3 sm:grid-cols-2">
-            <Button type="button" variant="primary" className="w-full" onClick={addToCart}>
-              <ShoppingBag className="size-4" strokeWidth={1.5} />
-              Comprar agora
+            <Button
+              type="button"
+              variant="primary"
+              className="w-full"
+              onClick={addToCart}
+              disabled={esgotado}
+            >
+              {!esgotado && <ShoppingBag className="size-4" strokeWidth={1.5} />}
+              {esgotado ? 'Esgotado' : 'Comprar agora'}
             </Button>
-            <Button type="button" variant="premium" className="w-full" onClick={addToCart}>
-              Adicionar ao carrinho
+            <Button
+              type="button"
+              variant="premium"
+              className="w-full"
+              onClick={addToCart}
+              disabled={esgotado}
+            >
+              {esgotado ? 'Esgotado' : 'Adicionar ao carrinho'}
             </Button>
           </div>
 
@@ -241,7 +258,9 @@ export function ProductScreen({ produto }: ProductScreenProps) {
               <div className="mt-4 space-y-1.5 font-body text-sm leading-relaxed text-graphite">
                 <div>Entrega padrão · {shipping.standard}</div>
                 <div>Entrega expressa · {shipping.express}</div>
-                <div className="pt-1 font-semibold text-gold-deep">Frete grátis acima de R$ 299,00</div>
+                <div className="pt-1 font-semibold text-gold-deep">
+                  Frete grátis acima de R$ 299,00
+                </div>
               </div>
             ) : null}
           </div>
@@ -261,7 +280,7 @@ export function ProductScreen({ produto }: ProductScreenProps) {
               .slice()
               .sort((a, b) => a.ordem - b.ordem)
               .map((beneficio) => {
-                const Icon = getIcon(beneficio.iconeNome);
+                const Icon = getIcon(beneficio.iconeNome)
                 return (
                   <div key={beneficio.id}>
                     <Icon className="mb-3 size-5 text-gold-deep" strokeWidth={1.5} />
@@ -272,11 +291,11 @@ export function ProductScreen({ produto }: ProductScreenProps) {
                       {beneficio.corpo}
                     </p>
                   </div>
-                );
+                )
               })}
           </div>
         ) : null}
       </section>
     </main>
-  );
+  )
 }
