@@ -48,10 +48,15 @@ export function ProductScreen({ produto }: ProductScreenProps) {
   const canCalculate = useMemo(() => cep.replace(/\D/g, '').length >= 8, [cep])
 
   const addToCart = () => {
+    if (!selectedSku) return
     addItem({
+      skuId: selectedSku.id,
+      name: produto.nome,
       color: selectedColor,
       size: selectedSize,
       qty,
+      price: produto.preco,
+      image: images[0]?.url ?? '',
     })
   }
 

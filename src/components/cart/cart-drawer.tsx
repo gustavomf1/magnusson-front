@@ -1,42 +1,42 @@
-"use client";
+'use client'
 
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useCart } from "@/contexts/cart-context";
-import { Button, OncaMark, Eyebrow } from "@/components/ui/primitives";
-import { formatCurrency } from "@/lib/format";
-import { cn } from "@/lib/cn";
+import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useCart } from '@/contexts/cart-context'
+import { Button, OncaMark, Eyebrow } from '@/components/ui/primitives'
+import { formatCurrency } from '@/lib/format'
+import { cn } from '@/lib/cn'
 
-const freeShipping = 299;
+const freeShipping = 299
 
 export function CartDrawer() {
-  const { items, isOpen, setOpen, subtotal, updateQty, removeItem } = useCart();
-  const remaining = Math.max(0, freeShipping - subtotal);
-  const progress = Math.min(100, (subtotal / freeShipping) * 100);
+  const { items, isOpen, setOpen, subtotal, updateQty, removeItem } = useCart()
+  const remaining = Math.max(0, freeShipping - subtotal)
+  const progress = Math.min(100, (subtotal / freeShipping) * 100)
 
   return (
     <>
       <div
         onClick={() => setOpen(false)}
         className={cn(
-          "fixed inset-0 z-[90] bg-navy/55 transition-opacity duration-[240ms] ease-magn",
-          isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          'fixed inset-0 z-[90] bg-navy/55 transition-opacity duration-[240ms] ease-magn',
+          isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
         )}
       />
 
       <aside
         aria-label="Carrinho"
         className={cn(
-          "fixed bottom-0 right-0 top-0 z-[100] flex w-full max-w-[460px] flex-col bg-offwhite shadow-card-lg transition-transform duration-[320ms] ease-magn",
-          isOpen ? "translate-x-0" : "translate-x-full"
+          'fixed bottom-0 right-0 top-0 z-[100] flex w-full max-w-[460px] flex-col bg-offwhite shadow-card-lg transition-transform duration-[320ms] ease-magn',
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         <div className="flex items-center justify-between border-b border-black/10 px-6 py-6 md:px-7">
           <div>
             <Eyebrow className="mb-1">Seu carrinho</Eyebrow>
             <div className="headline text-xl text-navy">
-              {items.length} {items.length === 1 ? "item" : "itens"}
+              {items.length} {items.length === 1 ? 'item' : 'itens'}
             </div>
           </div>
           <button
@@ -54,8 +54,9 @@ export function CartDrawer() {
             <p className="mb-2 font-body text-sm text-graphite">
               {remaining > 0 ? (
                 <>
-                  Faltam <strong className="font-semibold text-navy">{formatCurrency(remaining)}</strong> para
-                  frete grátis.
+                  Faltam{' '}
+                  <strong className="font-semibold text-navy">{formatCurrency(remaining)}</strong>{' '}
+                  para frete grátis.
                 </>
               ) : (
                 <span className="font-semibold text-gold-deep">Você ganhou frete grátis.</span>
@@ -78,9 +79,15 @@ export function CartDrawer() {
             </div>
           ) : (
             items.map((item) => (
-              <div key={item.id} className="flex gap-4 border-b border-black/10 py-5">
+              <div key={item.skuId} className="flex gap-4 border-b border-black/10 py-5">
                 <div className="relative h-[104px] w-20 flex-shrink-0 overflow-hidden rounded-md bg-navy">
-                  <Image src={item.image} alt={item.name} fill sizes="80px" className="object-cover" />
+                  <Image
+                    src={item.image || '/assets/polo-classic-flat.png'}
+                    alt={item.name}
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                  />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="headline text-[0.8rem] text-navy">{item.name}</div>
@@ -92,16 +99,18 @@ export function CartDrawer() {
                       <button
                         type="button"
                         aria-label="Diminuir quantidade"
-                        onClick={() => updateQty(item.id, item.qty - 1)}
+                        onClick={() => updateQty(item.skuId, item.qty - 1)}
                         className="inline-flex size-8 items-center justify-center"
                       >
                         <Minus className="size-3.5" strokeWidth={1.5} />
                       </button>
-                      <span className="min-w-7 text-center font-ui text-xs font-semibold">{item.qty}</span>
+                      <span className="min-w-7 text-center font-ui text-xs font-semibold">
+                        {item.qty}
+                      </span>
                       <button
                         type="button"
                         aria-label="Aumentar quantidade"
-                        onClick={() => updateQty(item.id, item.qty + 1)}
+                        onClick={() => updateQty(item.skuId, item.qty + 1)}
                         className="inline-flex size-8 items-center justify-center"
                       >
                         <Plus className="size-3.5" strokeWidth={1.5} />
@@ -113,7 +122,7 @@ export function CartDrawer() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item.skuId)}
                     className="mt-3 inline-flex items-center gap-2 font-ui text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-muted transition duration-[160ms] ease-magn hover:text-wine"
                   >
                     <Trash2 className="size-3.5" strokeWidth={1.5} />
@@ -130,7 +139,9 @@ export function CartDrawer() {
             <div className="font-ui text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-muted">
               Subtotal
             </div>
-            <div className="font-display text-2xl font-medium text-navy">{formatCurrency(subtotal)}</div>
+            <div className="font-display text-2xl font-medium text-navy">
+              {formatCurrency(subtotal)}
+            </div>
           </div>
           {items.length > 0 ? (
             <Link
@@ -141,7 +152,12 @@ export function CartDrawer() {
               Finalizar compra
             </Link>
           ) : (
-            <Button type="button" variant="primary" className="w-full" onClick={() => setOpen(false)}>
+            <Button
+              type="button"
+              variant="primary"
+              className="w-full"
+              onClick={() => setOpen(false)}
+            >
               Continuar navegando
             </Button>
           )}
@@ -152,5 +168,5 @@ export function CartDrawer() {
         </div>
       </aside>
     </>
-  );
+  )
 }
