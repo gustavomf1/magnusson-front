@@ -86,7 +86,11 @@ export default function CheckoutPage() {
           uf: endereco.uf,
         },
       })
-      router.push(`/pedidos/${pedido.id}`)
+      if (pedido.initPoint) {
+        window.location.href = pedido.initPoint
+      } else {
+        router.push(`/pedidos/${pedido.id}`)
+      }
     } catch {
       setErro('Não foi possível finalizar o pedido. Tente novamente.')
       setEnviando(false)

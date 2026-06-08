@@ -5,6 +5,8 @@ export type StatusPedido =
   | 'ENVIADO'
   | 'ENTREGUE'
   | 'CANCELADO'
+  | 'ESTORNADO'
+  | 'PARCIALMENTE_ESTORNADO'
 
 export const STATUS_LABEL: Record<StatusPedido, string> = {
   AGUARDANDO_PAGAMENTO: 'Aguardando pagamento',
@@ -13,6 +15,8 @@ export const STATUS_LABEL: Record<StatusPedido, string> = {
   ENVIADO: 'Enviado',
   ENTREGUE: 'Entregue',
   CANCELADO: 'Cancelado',
+  ESTORNADO: 'Estornado',
+  PARCIALMENTE_ESTORNADO: 'Parcialmente estornado',
 }
 
 export type PedidoItem = {
@@ -29,6 +33,8 @@ export type Pedido = {
   id: number
   status: StatusPedido
   total: number
+  valorEstornado: number
+  initPoint: string | null
   criadoEm: string
   atualizadoEm: string
   dadosNf: {

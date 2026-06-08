@@ -15,6 +15,8 @@ const STATUS_ICON = {
   ENVIADO: Truck,
   ENTREGUE: CheckCircle,
   CANCELADO: XCircle,
+  ESTORNADO: XCircle,
+  PARCIALMENTE_ESTORNADO: XCircle,
 }
 
 const STATUS_COLOR = {
@@ -24,7 +26,11 @@ const STATUS_COLOR = {
   ENVIADO: 'text-navy',
   ENTREGUE: 'text-forest',
   CANCELADO: 'text-wine',
+  ESTORNADO: 'text-wine',
+  PARCIALMENTE_ESTORNADO: 'text-wine',
 }
+
+const POLL_INTERVAL_MS = 4000
 
 export default function PedidoPage() {
   const params = useParams<{ id: string }>()
@@ -33,9 +39,28 @@ export default function PedidoPage() {
   const [erro, setErro] = useState(false)
 
   useEffect(() => {
-    buscarPedido(Number(params.id))
-      .then(setPedido)
-      .catch(() => setErro(true))
+    let cancelado = false
+    let timer: ReturnType<typeof setTimeout> | undefined
+
+    function carregar() {
+      buscarPedido(Number(params.id))
+        .then((p) => {
+          if (cancelado) return
+          setPedido(p)
+          if (p.status === 'AGUARDANDO_PAGAMENTO') {
+            timer = setTimeout(carregar, POLL_INTERVAL_MS)
+          }
+        })
+        .catch(() => {
+          if (!cancelado) setErro(true)
+        })
+    }
+
+    carregar()
+    return () => {
+      cancelado = true
+      if (timer) clearTimeout(timer)
+    }
   }, [params.id])
 
   if (erro) {
@@ -89,6 +114,11 @@ export default function PedidoPage() {
               year: 'numeric',
             })}
           </div>
+          {pedido.status === 'AGUARDANDO_PAGAMENTO' && (
+            <p className="mt-3 font-body text-xs italic text-muted">
+              Confirmando pagamento — isso pode levar alguns segundos…
+            </p>
+          )}
         </div>
 
         {/* Itens */}
