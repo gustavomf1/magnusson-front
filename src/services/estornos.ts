@@ -1,4 +1,5 @@
 import { apiFetch } from '@/lib/api'
+import type { StatusPedido } from '@/types/pedido'
 
 export type EstornoRequest = {
   pedidoItemId: number
@@ -13,7 +14,7 @@ export type Estorno = {
   quantidade: number
   valor: number
   mpRefundId: string
-  statusPedido: string
+  statusPedido: StatusPedido
   criadoEm: string
 }
 
