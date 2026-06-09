@@ -98,4 +98,5 @@ export type Produto = {
   detalhes: DetalheDto[]
   reviews: ReviewDto[]
   faqs: FaqDto[]
+  regraCashback: { percentual: number; prazoValidadeDias: number | null } | null
 }

@@ -2,7 +2,7 @@ import { apiFetch } from '@/lib/api'
 import type { Pedido, PedidoResumo } from '@/types/pedido'
 
 export type CheckoutRequest = {
-  itens: { skuId: number; quantidade: number }[]
+  itens: { skuId: number; quantidade: number; cupomId?: number }[]
   dadosNf: {
     nomeCliente: string
     cpfCnpj: string
