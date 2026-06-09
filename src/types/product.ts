@@ -1,3 +1,5 @@
+export type Categoria = 'POLO' | 'CAMISA' | 'CALCA' | 'SHORTS'
+
 export type ImagemDto = {
   id: number
   url: string
@@ -78,6 +80,7 @@ export type ProdutoResumo = {
   preco: number
   status: 'RASCUNHO' | 'PUBLICADO' | 'ARQUIVADO'
   imagemPrincipal: string | null
+  categoria: Categoria | null
 }
 
 export type Produto = {
@@ -90,6 +93,7 @@ export type Produto = {
   descricao: string | null
   descricaoSeo: string | null
   status: 'RASCUNHO' | 'PUBLICADO' | 'ARQUIVADO'
+  categoria: Categoria | null
   imagens: ImagemDto[]
   cores: CorDto[]
   tamanhos: TamanhoDto[]
