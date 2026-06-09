@@ -17,8 +17,8 @@ export function LoginForm() {
     setErro(null)
     setLoading(true)
     try {
-      await login(email, senha)
-      router.push('/')
+      const u = await login(email, senha)
+      router.push(u.role === 'ADMIN' ? '/admin' : '/')
     } catch {
       setErro('Email ou senha incorretos.')
     } finally {

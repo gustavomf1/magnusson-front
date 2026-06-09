@@ -6,7 +6,7 @@ import { me, login as authLogin, logout as authLogout, type Usuario } from '@/se
 type AuthContextValue = {
   usuario: Usuario | null
   loading: boolean
-  login: (email: string, senha: string) => Promise<void>
+  login: (email: string, senha: string) => Promise<Usuario>
   logout: () => Promise<void>
 }
 
@@ -23,9 +23,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  useEffect(() => {
+    function handleUnauthorized() {
+      setUsuario(null)
+    }
+    window.addEventListener('auth:unauthorized', handleUnauthorized)
+    return () => window.removeEventListener('auth:unauthorized', handleUnauthorized)
+  }, [])
+
   async function login(email: string, senha: string) {
     const u = await authLogin(email, senha)
     setUsuario(u)
+    return u
   }
 
   async function logout() {
