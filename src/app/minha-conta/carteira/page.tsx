@@ -71,7 +71,10 @@ export default function CarteiraPage() {
   }, [loading, usuario, router])
 
   useEffect(() => {
-    if (!usuario) return
+    if (!usuario) {
+      setCarregando(false)
+      return
+    }
     getCarteira()
       .then(setCupons)
       .finally(() => setCarregando(false))
