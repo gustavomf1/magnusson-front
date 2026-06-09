@@ -19,7 +19,7 @@ function CardCupomAtivo({ cupom }: { cupom: Cupom }) {
   return (
     <div
       className={`rounded-lg border-2 p-4 ${
-        venceLogo ? 'border-[#D4AF37] bg-[#D4AF37]/10' : 'border-[#1E3A2A] bg-[#1E3A2A]/5'
+        venceLogo ? 'border-gold bg-gold/10' : 'border-forest bg-forest/5'
       }`}
     >
       <strong className="text-lg text-navy">{formatCurrency(cupom.valor)} de desconto</strong>
@@ -29,8 +29,8 @@ function CardCupomAtivo({ cupom }: { cupom: Cupom }) {
           <>
             {' · '}
             {venceLogo ? (
-              <span className="text-[#B89126]">
-                ⚠ Vence em {dias <= 0 ? 'breve' : `${dias} dia(s)`}
+              <span className="text-gold-deep">
+                Vence em {dias <= 0 ? 'breve' : `${dias} dia(s)`}
               </span>
             ) : (
               `Vence em ${dias} dias`
