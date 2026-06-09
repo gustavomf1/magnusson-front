@@ -1,49 +1,50 @@
-"use client";
+'use client'
 
-import { Menu, ShoppingBag, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useCart } from "@/contexts/cart-context";
-import { ButtonLink, Wordmark } from "@/components/ui/primitives";
-import { cn } from "@/lib/cn";
+import { Menu, ShoppingBag, X } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { useCart } from '@/contexts/cart-context'
+import { ButtonLink, Wordmark } from '@/components/ui/primitives'
+import { cn } from '@/lib/cn'
 
 const nav = [
-  { label: "Produto", href: "/#produto" },
-  { label: "História", href: "/#historia" },
-  { label: "Tamanhos", href: "/#tamanhos" },
-  { label: "Avaliações", href: "/#avaliacoes" },
-  { label: "FAQ", href: "/#faq" }
-];
+  { label: 'Produtos', href: '/produtos' },
+  { label: 'Produto', href: '/#produto' },
+  { label: 'História', href: '/#historia' },
+  { label: 'Tamanhos', href: '/#tamanhos' },
+  { label: 'Avaliações', href: '/#avaliacoes' },
+  { label: 'FAQ', href: '/#faq' },
+]
 
 export function SiteHeader() {
-  const pathname = usePathname();
-  const { count, setOpen } = useCart();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const forceSolid = pathname !== "/";
+  const pathname = usePathname()
+  const { count, setOpen } = useCart()
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const forceSolid = pathname !== '/'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const onScroll = () => setScrolled(window.scrollY > 80)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
 
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
+    setMenuOpen(false)
+  }, [pathname])
 
-  const solid = forceSolid || scrolled || menuOpen;
+  const solid = forceSolid || scrolled || menuOpen
 
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b transition duration-[240ms] ease-magn",
+        'fixed inset-x-0 top-0 z-50 border-b transition duration-[240ms] ease-magn',
         solid
-          ? "border-gold/25 bg-navy/90 text-offwhite shadow-[0_1px_0_rgba(212,175,55,0.18)] backdrop-blur-xl"
-          : "border-transparent bg-transparent text-offwhite"
+          ? 'border-gold/25 bg-navy/90 text-offwhite shadow-[0_1px_0_rgba(212,175,55,0.18)] backdrop-blur-xl'
+          : 'border-transparent bg-transparent text-offwhite'
       )}
     >
       <div className="mx-auto grid h-[76px] max-w-[1280px] grid-cols-[1fr_auto] items-center gap-5 px-5 md:grid-cols-[180px_1fr_auto] md:px-9">
@@ -66,7 +67,7 @@ export function SiteHeader() {
         <div className="flex items-center justify-end gap-3 md:gap-4">
           <button
             type="button"
-            aria-label={`Abrir carrinho com ${count} ${count === 1 ? "item" : "itens"}`}
+            aria-label={`Abrir carrinho com ${count} ${count === 1 ? 'item' : 'itens'}`}
             onClick={() => setOpen(true)}
             className="button-label inline-flex min-h-10 items-center gap-2 rounded-md border border-transparent px-2 text-[0.68rem] text-inherit transition duration-[160ms] ease-magn hover:text-gold md:px-0"
           >
@@ -85,19 +86,23 @@ export function SiteHeader() {
 
           <button
             type="button"
-            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-label={menuOpen ? 'Fechar menu' : 'Abrir menu'}
             onClick={() => setMenuOpen((open) => !open)}
             className="inline-flex size-10 items-center justify-center rounded-md border border-gold/30 text-gold md:hidden"
           >
-            {menuOpen ? <X className="size-5" strokeWidth={1.5} /> : <Menu className="size-5" strokeWidth={1.5} />}
+            {menuOpen ? (
+              <X className="size-5" strokeWidth={1.5} />
+            ) : (
+              <Menu className="size-5" strokeWidth={1.5} />
+            )}
           </button>
         </div>
       </div>
 
       <div
         className={cn(
-          "grid overflow-hidden transition-[grid-template-rows] duration-[240ms] ease-magn md:hidden",
-          menuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          'grid overflow-hidden transition-[grid-template-rows] duration-[240ms] ease-magn md:hidden',
+          menuOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
         )}
       >
         <nav className="min-h-0 border-t border-gold/20 px-5">
@@ -118,5 +123,5 @@ export function SiteHeader() {
         </nav>
       </div>
     </header>
-  );
+  )
 }
