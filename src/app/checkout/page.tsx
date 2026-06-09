@@ -1,12 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronRight, MapPin, Package, User } from 'lucide-react'
 import { useCart } from '@/contexts/cart-context'
+import { useAuth } from '@/contexts/auth-context'
 import { checkout } from '@/services/pedidos'
+import { getCarteira } from '@/services/cashback'
 import { formatCurrency } from '@/lib/format'
 import { cn } from '@/lib/cn'
+import type { Cupom } from '@/types/cupom'
 
 type DadosNf = {
   nomeCliente: string
@@ -45,11 +48,21 @@ const STEPS = [
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, subtotal, setOpen } = useCart()
+  const { usuario } = useAuth()
   const [step, setStep] = useState(0)
   const [dadosNf, setDadosNf] = useState<DadosNf>(EMPTY_NF)
   const [endereco, setEndereco] = useState<Endereco>(EMPTY_END)
   const [enviando, setEnviando] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
+  const [cupons, setCupons] = useState<Cupom[]>([])
+  const [cupomPorItem, setCupomPorItem] = useState<Record<number, number | undefined>>({})
+
+  useEffect(() => {
+    if (!usuario) return
+    getCarteira()
+      .then((todos) => setCupons(todos.filter((c) => c.status === 'ATIVO')))
+      .catch(() => {})
+  }, [usuario])
 
   if (items.length === 0 && !enviando) {
     return (
@@ -74,7 +87,11 @@ export default function CheckoutPage() {
     setErro(null)
     try {
       const pedido = await checkout({
-        itens: items.map((i) => ({ skuId: i.skuId, quantidade: i.qty })),
+        itens: items.map((i) => ({
+          skuId: i.skuId,
+          quantidade: i.qty,
+          cupomId: cupomPorItem[i.skuId],
+        })),
         dadosNf,
         endereco: {
           logradouro: endereco.logradouro,
@@ -355,19 +372,62 @@ export default function CheckoutPage() {
                 Itens do pedido
               </h2>
               <div className="divide-y divide-black/10">
-                {items.map((item) => (
-                  <div key={item.skuId} className="flex items-center justify-between py-3">
-                    <div>
-                      <div className="font-body text-sm font-medium text-navy">{item.name}</div>
-                      <div className="font-body text-xs text-muted">
-                        {item.color} · Tam. {item.size} · Qtd. {item.qty}
+                {items.map((item) => {
+                  const itemTotal = item.price * item.qty
+                  const selecionado = cupomPorItem[item.skuId]
+                  const cupomSelecionado = cupons.find((c) => c.id === selecionado)
+                  const aviso = cupomSelecionado && cupomSelecionado.valor > itemTotal
+                  // Cupons disponíveis = ativos não usados em outro item
+                  const disponiveis = cupons.filter(
+                    (c) =>
+                      c.id === selecionado ||
+                      !Object.entries(cupomPorItem).some(
+                        ([skuStr, cid]) => Number(skuStr) !== item.skuId && cid === c.id
+                      )
+                  )
+                  return (
+                    <div key={item.skuId} className="py-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-body text-sm font-medium text-navy">{item.name}</div>
+                          <div className="font-body text-xs text-muted">
+                            {item.color} · Tam. {item.size} · Qtd. {item.qty}
+                          </div>
+                        </div>
+                        <div className="font-display text-sm font-medium text-navy">
+                          {formatCurrency(itemTotal)}
+                        </div>
                       </div>
+                      {usuario && cupons.length > 0 && (
+                        <div className="mt-2">
+                          <select
+                            value={selecionado ?? ''}
+                            onChange={(e) =>
+                              setCupomPorItem((prev) => ({
+                                ...prev,
+                                [item.skuId]: e.target.value ? Number(e.target.value) : undefined,
+                              }))
+                            }
+                            className="w-full rounded-md border border-black/15 bg-offwhite px-3 py-2 font-body text-xs text-black"
+                          >
+                            <option value="">Sem cupom de cashback</option>
+                            {disponiveis.map((c) => (
+                              <option key={c.id} value={c.id}>
+                                Cupom #{c.id} — {formatCurrency(c.valor)} de desconto
+                              </option>
+                            ))}
+                          </select>
+                          {aviso && (
+                            <p className="mt-1 font-body text-xs text-gold-deep">
+                              O valor do cupom ({formatCurrency(cupomSelecionado.valor)}) é maior
+                              que o total do item.
+                            </p>
+                          )}
+                        </div>
+                      )}
                     </div>
-                    <div className="font-display text-sm font-medium text-navy">
-                      {formatCurrency(item.price * item.qty)}
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
               <div className="mt-4 flex justify-between border-t border-black/10 pt-4">
                 <span className="font-ui text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted">
