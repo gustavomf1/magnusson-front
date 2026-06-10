@@ -1,32 +1,33 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Script from "next/script";
-import { Footer } from "@/components/marketing/landing-page";
-import { ProductScreen } from "@/components/catalog/product-screen";
-import { getProduct } from "@/services/products";
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import Script from 'next/script'
+import { Footer } from '@/components/marketing/landing-page'
+import { ProductScreen } from '@/components/catalog/product-screen'
+import { getProduct } from '@/services/products'
 
-export const revalidate = 60;
+export const revalidate = 60
 
 type ProductPageProps = {
-  params: Promise<{ slug: string }>;
-};
+  params: Promise<{ slug: string }>
+}
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const produto = await getProduct(slug);
+  const { slug } = await params
+  const produto = await getProduct(slug)
 
   if (!produto) {
-    return {};
+    return {}
   }
 
-  const description = produto.descricaoSeo ?? produto.descricao ?? undefined;
-  const principal = produto.imagens.find((image) => image.ordem === 0) ?? produto.imagens[0];
+  const description = produto.descricaoSeo ?? produto.descricao ?? undefined
+  const imagens = produto.cores.flatMap((cor) => cor.imagens)
+  const principal = imagens.find((image) => image.ordem === 0) ?? imagens[0]
 
   return {
     title: `${produto.nome} | MAGNOSSÃO`,
     description,
     alternates: {
-      canonical: `/produto/${produto.slug}`
+      canonical: `/produto/${produto.slug}`,
     },
     openGraph: {
       title: produto.nome,
@@ -36,42 +37,42 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
         ? [
             {
               url: principal.url,
-              alt: principal.alt
-            }
+              alt: principal.alt,
+            },
           ]
-        : undefined
-    }
-  };
+        : undefined,
+    },
+  }
 }
 
 function getProductJsonLd(produto: NonNullable<Awaited<ReturnType<typeof getProduct>>>) {
   return {
-    "@context": "https://schema.org",
-    "@type": "Product",
+    '@context': 'https://schema.org',
+    '@type': 'Product',
     name: produto.nome,
-    image: produto.imagens.map((image) => image.url),
+    image: produto.cores.flatMap((cor) => cor.imagens).map((image) => image.url),
     description: produto.descricaoSeo ?? produto.descricao ?? undefined,
     brand: {
-      "@type": "Brand",
-      name: "MAGNOSSÃO"
+      '@type': 'Brand',
+      name: 'MAGNOSSÃO',
     },
     offers: {
-      "@type": "Offer",
+      '@type': 'Offer',
       url: `/produto/${produto.slug}`,
-      priceCurrency: "BRL",
+      priceCurrency: 'BRL',
       price: produto.preco.toFixed(2),
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition"
-    }
-  };
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+    },
+  }
 }
 
 export default async function ProdutoPage({ params }: ProductPageProps) {
-  const { slug } = await params;
-  const produto = await getProduct(slug);
+  const { slug } = await params
+  const produto = await getProduct(slug)
 
   if (!produto) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -82,5 +83,5 @@ export default async function ProdutoPage({ params }: ProductPageProps) {
         {JSON.stringify(getProductJsonLd(produto))}
       </Script>
     </>
-  );
+  )
 }

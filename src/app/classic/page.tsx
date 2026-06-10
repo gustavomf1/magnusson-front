@@ -1,81 +1,82 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Script from "next/script";
-import { Footer } from "@/components/marketing/landing-page";
-import { ProductScreen } from "@/components/catalog/product-screen";
-import { getProduct } from "@/services/products";
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import Script from 'next/script'
+import { Footer } from '@/components/marketing/landing-page'
+import { ProductScreen } from '@/components/catalog/product-screen'
+import { getProduct } from '@/services/products'
 
-export const revalidate = 60;
+export const revalidate = 60
 
-const SLUG = "classic";
+const SLUG = 'classic'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const produto = await getProduct(SLUG);
+  const produto = await getProduct(SLUG)
 
   if (!produto) {
-    return {};
+    return {}
   }
 
-  const description = produto.descricaoSeo ?? produto.descricao ?? undefined;
-  const principal = produto.imagens.find((image) => image.ordem === 0) ?? produto.imagens[0];
+  const description = produto.descricaoSeo ?? produto.descricao ?? undefined
+  const imagens = produto.cores.flatMap((cor) => cor.imagens)
+  const principal = imagens.find((image) => image.ordem === 0) ?? imagens[0]
 
   return {
     title: produto.nome,
     description,
     alternates: {
-      canonical: "/classic"
+      canonical: '/classic',
     },
     openGraph: {
       title: produto.nome,
       description,
-      url: "/classic",
+      url: '/classic',
       images: principal
         ? [
             {
               url: principal.url,
-              alt: principal.alt
-            }
+              alt: principal.alt,
+            },
           ]
-        : undefined
-    }
-  };
+        : undefined,
+    },
+  }
 }
 
 function getProductJsonLd(produto: NonNullable<Awaited<ReturnType<typeof getProduct>>>) {
   return {
-    "@context": "https://schema.org",
-    "@type": "Product",
+    '@context': 'https://schema.org',
+    '@type': 'Product',
     name: produto.nome,
-    image: produto.imagens.map((image) => image.url),
+    image: produto.cores.flatMap((cor) => cor.imagens).map((image) => image.url),
     description: produto.descricaoSeo ?? produto.descricao ?? undefined,
     brand: {
-      "@type": "Brand",
-      name: "MAGNOSSÃO"
+      '@type': 'Brand',
+      name: 'MAGNOSSÃO',
     },
     offers: {
-      "@type": "Offer",
-      url: "/classic",
-      priceCurrency: "BRL",
+      '@type': 'Offer',
+      url: '/classic',
+      priceCurrency: 'BRL',
       price: produto.preco.toFixed(2),
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition"
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
     },
     aggregateRating:
       produto.reviews.length > 0
         ? {
-            "@type": "AggregateRating",
-            ratingValue: "5",
-            reviewCount: produto.reviews.length.toString()
+            '@type': 'AggregateRating',
+            ratingValue: '5',
+            reviewCount: produto.reviews.length.toString(),
           }
-        : undefined
-  };
+        : undefined,
+  }
 }
 
 export default async function ClassicPage() {
-  const produto = await getProduct(SLUG);
+  const produto = await getProduct(SLUG)
 
   if (!produto) {
-    notFound();
+    notFound()
   }
 
   return (
@@ -86,5 +87,5 @@ export default async function ClassicPage() {
         {JSON.stringify(getProductJsonLd(produto))}
       </Script>
     </>
-  );
+  )
 }

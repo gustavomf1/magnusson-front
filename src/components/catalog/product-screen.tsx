@@ -3,7 +3,7 @@
 import { Minus, Plus, Ruler, ShoppingBag, Truck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useCart } from '@/contexts/cart-context'
 import { Button, Eyebrow, Flourish, Selo } from '@/components/ui/primitives'
 import { formatCurrency } from '@/lib/format'
@@ -21,7 +21,6 @@ type ProductScreenProps = {
 }
 
 export function ProductScreen({ produto }: ProductScreenProps) {
-  const images = produto.imagens.slice().sort((a, b) => a.ordem - b.ordem)
   const colors = produto.cores
   const sizes = produto.tamanhos
 
@@ -33,7 +32,12 @@ export function ProductScreen({ produto }: ProductScreenProps) {
   const [shipping, setShipping] = useState<ShippingQuote | null>(null)
   const { addItem } = useCart()
 
+  useEffect(() => {
+    setActiveImage(0)
+  }, [selectedColor])
+
   const selectedCor = colors.find((c) => c.nome === selectedColor)
+  const images = (selectedCor?.imagens ?? []).slice().sort((a, b) => a.ordem - b.ordem)
   const selectedTamanho = sizes.find((s) => s.label === selectedSize)
   const selectedSku = produto.skus.find(
     (s) => s.corId === selectedCor?.id && s.tamanhoId === selectedTamanho?.id && s.ativo
