@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Feather,
@@ -11,155 +11,151 @@ import {
   Square,
   Star,
   X,
-  type LucideIcon
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { ButtonLink, Eyebrow, Flourish, OncaMark, SectionHead, Selo } from "@/components/ui/primitives";
-import { formatCurrency } from "@/lib/format";
-import { cn } from "@/lib/cn";
-import type { ProdutoResumo } from "@/types/product";
+  type LucideIcon,
+} from 'lucide-react'
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import {
+  ButtonLink,
+  Eyebrow,
+  Flourish,
+  OncaMark,
+  SectionHead,
+  Selo,
+} from '@/components/ui/primitives'
+import { ProductCarousel } from '@/components/catalog/product-carousel'
+import { cn } from '@/lib/cn'
+import type { ProdutoResumo } from '@/types/product'
 
 // Conteúdo estático de marketing da landing institucional.
 // Não é dado de catálogo — a página de produto consome a API.
 const product = {
   price: 249.9,
-  seals: ["Algodão Pima", "Feito no Brasil", "Edição Premium"]
-};
-
-const colors = [
-  { name: "Azul Marinho", hex: "#0B1F3A" },
-  { name: "Preto", hex: "#111111" },
-  { name: "Branco", hex: "#F5F5F5" },
-  { name: "Verde Floresta", hex: "#1E3A2A" },
-  { name: "Bege Areia", hex: "#D8C7AE" }
-];
+  seals: ['Algodão Pima', 'Feito no Brasil', 'Edição Premium'],
+}
 
 const sizeGuide = [
-  { label: "P", chest: 50, length: 68, shoulder: 42 },
-  { label: "M", chest: 53, length: 70, shoulder: 44 },
-  { label: "G", chest: 56, length: 72, shoulder: 46 },
-  { label: "GG", chest: 59, length: 74, shoulder: 48 }
-];
+  { label: 'P', chest: 50, length: 68, shoulder: 42 },
+  { label: 'M', chest: 53, length: 70, shoulder: 44 },
+  { label: 'G', chest: 56, length: 72, shoulder: 46 },
+  { label: 'GG', chest: 59, length: 74, shoulder: 48 },
+]
 
 const benefits: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Sparkles,
-    title: "Algodão Premium",
-    body: "Fios de algodão pima de fibra longa, toque sedoso e alta durabilidade."
+    title: 'Algodão Premium',
+    body: 'Fios de algodão pima de fibra longa, toque sedoso e alta durabilidade.',
   },
   {
     icon: Feather,
-    title: "Bordado Refinado",
-    body: "Onça e wordmark bordados em fio dourado fosco, sem brilho excessivo."
+    title: 'Bordado Refinado',
+    body: 'Onça e wordmark bordados em fio dourado fosco, sem brilho excessivo.',
   },
   {
     icon: Square,
-    title: "Modelagem Clássica",
-    body: "Corte atemporal, ombro estruturado e comprimento equilibrado."
+    title: 'Modelagem Clássica',
+    body: 'Corte atemporal, ombro estruturado e comprimento equilibrado.',
   },
   {
     icon: MapPin,
-    title: "Feita no Brasil",
-    body: "Confeccionada em São Paulo com fornecedores selecionados."
+    title: 'Feita no Brasil',
+    body: 'Confeccionada em São Paulo com fornecedores selecionados.',
   },
   {
     icon: Infinity,
-    title: "Design Atemporal",
-    body: "Uma peça que atravessa tendências, pensada para durar décadas."
-  }
-];
+    title: 'Design Atemporal',
+    body: 'Uma peça que atravessa tendências, pensada para durar décadas.',
+  },
+]
 
 const details = [
   {
-    label: "POLO TRADICIONAL",
-    src: "/assets/polo-tradicional-113501.png",
-    alt: "Polo MAGNOSSÃO tradicional azul marinho com detalhe da gola",
+    label: 'POLO TRADICIONAL',
+    src: '/assets/polo-tradicional-113501.png',
+    alt: 'Polo MAGNOSSÃO tradicional azul marinho com detalhe da gola',
     width: 1268,
-    height: 1241
+    height: 1241,
   },
   {
-    label: "POLO REI",
-    src: "/assets/polo-realeza-detail.png",
-    alt: "Polo MAGNOSSÃO Rei azul marinho com acabamento dourado",
+    label: 'POLO REI',
+    src: '/assets/polo-realeza-detail.png',
+    alt: 'Polo MAGNOSSÃO Rei azul marinho com acabamento dourado',
     width: 1254,
-    height: 1254
+    height: 1254,
   },
   {
-    label: "POLO TRADICIONAL",
-    src: "/assets/polo-tradicional-verde.png",
-    alt: "Polo MAGNOSSÃO tradicional verde floresta com detalhe da gola",
+    label: 'POLO TRADICIONAL',
+    src: '/assets/polo-tradicional-verde.png',
+    alt: 'Polo MAGNOSSÃO tradicional verde floresta com detalhe da gola',
     width: 1268,
-    height: 1240
+    height: 1240,
   },
   {
-    label: "POLO REI",
-    src: "/assets/polo-rei-verde.png",
-    alt: "Polo MAGNOSSÃO Rei verde floresta com acabamento dourado",
+    label: 'POLO REI',
+    src: '/assets/polo-rei-verde.png',
+    alt: 'Polo MAGNOSSÃO Rei verde floresta com acabamento dourado',
     width: 1254,
-    height: 1254
-  }
-];
+    height: 1254,
+  },
+]
 
 const reviews = [
   {
-    quote: "Camisa elegante, tecido muito bom e acabamento acima do esperado.",
-    name: "Rafael C.",
-    city: "São Paulo, SP"
+    quote: 'Camisa elegante, tecido muito bom e acabamento acima do esperado.',
+    name: 'Rafael C.',
+    city: 'São Paulo, SP',
   },
   {
-    quote: "Discreta e poderosa. Combina com terno e com jeans. Atemporal de verdade.",
-    name: "Lucas F.",
-    city: "Curitiba, PR"
+    quote: 'Discreta e poderosa. Combina com terno e com jeans. Atemporal de verdade.',
+    name: 'Lucas F.',
+    city: 'Curitiba, PR',
   },
   {
-    quote: "O bordado da onça é o detalhe que muda tudo. Vai virar minha polo padrão.",
-    name: "Henrique B.",
-    city: "Belo Horizonte, MG"
-  }
-];
+    quote: 'O bordado da onça é o detalhe que muda tudo. Vai virar minha polo padrão.',
+    name: 'Henrique B.',
+    city: 'Belo Horizonte, MG',
+  },
+]
 
 const faqs = [
   {
-    question: "Qual o tecido da polo?",
+    question: 'Qual o tecido da polo?',
     answer:
-      "Algodão pima de fibra longa, com fios sedosos e respiráveis. Toque premium, alta durabilidade."
+      'Algodão pima de fibra longa, com fios sedosos e respiráveis. Toque premium, alta durabilidade.',
   },
   {
-    question: "Como funciona a troca?",
+    question: 'Como funciona a troca?',
     answer:
-      "Você tem 30 dias para trocar tamanho ou cor, sem custo, desde que a peça esteja sem uso, com etiquetas e embalagem."
+      'Você tem 30 dias para trocar tamanho ou cor, sem custo, desde que a peça esteja sem uso, com etiquetas e embalagem.',
   },
   {
-    question: "Tem frete grátis?",
+    question: 'Tem frete grátis?',
     answer:
-      "Frete grátis acima de R$ 299,00 para todo o Brasil. A calculadora de frete está disponível na página do produto e no carrinho."
+      'Frete grátis acima de R$ 299,00 para todo o Brasil. A calculadora de frete está disponível na página do produto e no carrinho.',
   },
   {
-    question: "Como escolher o tamanho?",
+    question: 'Como escolher o tamanho?',
     answer:
-      "Use a tabela de medidas. Na dúvida entre dois tamanhos, escolha o menor. A peça tem modelagem clássica, não justa."
+      'Use a tabela de medidas. Na dúvida entre dois tamanhos, escolha o menor. A peça tem modelagem clássica, não justa.',
   },
   {
-    question: "Quais formas de pagamento?",
-    answer: "Pix, cartão de crédito em até 3× sem juros, boleto e carteiras digitais."
+    question: 'Quais formas de pagamento?',
+    answer: 'Pix, cartão de crédito em até 3× sem juros, boleto e carteiras digitais.',
   },
   {
-    question: "A peça encolhe?",
+    question: 'A peça encolhe?',
     answer:
-      "A modelagem é pré-encolhida. Lavar a até 30°C, sem secadora, mantém o caimento original."
-  }
-];
+      'A modelagem é pré-encolhida. Lavar a até 30°C, sem secadora, mantém o caimento original.',
+  },
+]
 
 export function LandingPage({ produtos = [] }: { produtos?: ProdutoResumo[] }) {
-  const destaque = produtos.find((p) => p.status === "PUBLICADO") ?? produtos[0] ?? null;
-
   return (
     <>
       <Hero />
       <Benefits />
-      <ColorSection preco={destaque?.preco ?? product.price} />
+      <ProductCarousel produtos={produtos} />
       <Story />
       <DetailGrid />
       <SizeGuide />
@@ -168,12 +164,15 @@ export function LandingPage({ produtos = [] }: { produtos?: ProdutoResumo[] }) {
       <FinalCTA />
       <Footer />
     </>
-  );
+  )
 }
 
 function Hero() {
   return (
-    <section id="produto" className="velvet-surface relative -mt-[76px] min-h-[720px] overflow-hidden pt-[76px] text-offwhite">
+    <section
+      id="produto"
+      className="velvet-surface relative -mt-[76px] min-h-[720px] overflow-hidden pt-[76px] text-offwhite"
+    >
       <div className="noise-overlay" />
       <div className="relative mx-auto grid max-w-[1280px] items-center gap-12 px-5 py-16 md:grid-cols-2 md:gap-20 md:px-9 md:py-24 lg:py-28">
         <div className="fade-up max-w-xl">
@@ -201,7 +200,10 @@ function Hero() {
           </div>
         </div>
 
-        <div className="fade-up relative mx-auto w-full max-w-[560px]" style={{ animationDelay: "80ms" }}>
+        <div
+          className="fade-up relative mx-auto w-full max-w-[560px]"
+          style={{ animationDelay: '80ms' }}
+        >
           <div className="absolute -inset-4 rounded-xl border border-gold/30 md:-inset-7" />
           <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-navy shadow-dark">
             <Image
@@ -217,27 +219,25 @@ function Hero() {
             <OncaMark size={36} />
             <div>
               <div className="headline text-xs text-navy">Polo Classic</div>
-              <div className="mt-1 font-body text-[0.7rem] text-muted">Azul Marinho · Algodão Pima</div>
+              <div className="mt-1 font-body text-[0.7rem] text-muted">
+                Azul Marinho · Algodão Pima
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function Benefits() {
   return (
     <section className="bg-offwhite px-5 py-20 md:px-9 md:py-24">
       <div className="mx-auto max-w-[1280px]">
-        <SectionHead
-          align="center"
-          eyebrow="Por que MAGNOSSÃO"
-          title="Cada detalhe foi pensado"
-        />
+        <SectionHead align="center" eyebrow="Por que MAGNOSSÃO" title="Cada detalhe foi pensado" />
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
           {benefits.map((item) => {
-            const Icon = item.icon;
+            const Icon = item.icon
 
             return (
               <article
@@ -248,63 +248,12 @@ function Benefits() {
                 <h3 className="headline mt-4 text-sm text-navy">{item.title}</h3>
                 <p className="mt-2 font-body text-sm leading-relaxed text-muted">{item.body}</p>
               </article>
-            );
+            )
           })}
         </div>
       </div>
     </section>
-  );
-}
-
-function ColorSection({ preco }: { preco: number }) {
-  return (
-    <section className="velvet-surface relative overflow-hidden px-5 py-20 text-offwhite md:px-9 md:py-24">
-      <div className="noise-overlay" />
-      <div className="relative mx-auto max-w-[1280px]">
-        <SectionHead
-          align="center"
-          dark
-          eyebrow="Coleção Classic"
-          title="Escolha sua cor"
-        />
-        <Flourish className="mx-auto mt-5 max-w-60" />
-        <Link href="/classic" className="group mt-12 block">
-          <div className="relative overflow-hidden rounded-xl border border-gold/25 bg-black shadow-dark">
-            <Image
-              src="/assets/polo-classic-front.png"
-              alt="Cinco cores da Polo MAGNOSSÃO Classic"
-              width={1254}
-              height={1254}
-              sizes="(min-width: 1024px) 1180px, 94vw"
-              className="h-auto w-full transition duration-[600ms] ease-magn group-hover:scale-[1.03]"
-            />
-          </div>
-        </Link>
-        <div className="mt-7 grid gap-3 sm:grid-cols-5">
-          {colors.map((color, index) => (
-            <Link
-              key={color.name}
-              href="/classic"
-              className="flex items-center gap-3 border-b border-gold/20 pb-3 text-left transition duration-[160ms] ease-magn hover:text-gold sm:flex-col sm:border-b-0 sm:text-center"
-            >
-              <span
-                className="size-8 shrink-0 rounded-full border border-white/15 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.12)]"
-                style={{ backgroundColor: color.hex }}
-              />
-              <span>
-                <span className="block font-display text-sm uppercase tracking-[0.14em]">
-                  {String(index + 1).padStart(2, "0")}. {color.name}
-                </span>
-                <span className="mt-1 block font-body text-xs text-[#8A93A0]">
-                  {formatCurrency(preco)}
-                </span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  )
 }
 
 function Story() {
@@ -333,9 +282,9 @@ function Story() {
             MAGNOSSÃO nasce do encontro entre uma raiz nórdica e uma alma brasileira.
           </p>
           <p className="mb-7 font-body text-[0.95rem] leading-loose text-graphite">
-            Uma marca criada para traduzir força, sofisticação e autenticidade em peças
-            clássicas e atemporais. Cada polo carrega a runa Fehu, símbolo de prosperidade,
-            e o bordado discreto da onça pintada, presença do cerrado brasileiro.
+            Uma marca criada para traduzir força, sofisticação e autenticidade em peças clássicas e
+            atemporais. Cada polo carrega a runa Fehu, símbolo de prosperidade, e o bordado discreto
+            da onça pintada, presença do cerrado brasileiro.
           </p>
           <ButtonLink href="/classic" variant="outline">
             Ver detalhes
@@ -343,32 +292,32 @@ function Story() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function DetailGrid() {
-  const [selectedDetail, setSelectedDetail] = useState<(typeof details)[number] | null>(null);
+  const [selectedDetail, setSelectedDetail] = useState<(typeof details)[number] | null>(null)
 
   useEffect(() => {
     if (!selectedDetail) {
-      return;
+      return
     }
 
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setSelectedDetail(null);
+      if (event.key === 'Escape') {
+        setSelectedDetail(null)
       }
-    };
+    }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKeyDown)
 
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [selectedDetail]);
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [selectedDetail])
 
   return (
     <section className="bg-offwhite px-5 py-20 md:px-9 md:py-24">
@@ -430,10 +379,7 @@ function DetailGrid() {
           </div>
 
           <div className="h-full overflow-auto p-5 pt-20 md:p-10 md:pt-24">
-            <div
-              className="mx-auto w-max"
-              onClick={(event) => event.stopPropagation()}
-            >
+            <div className="mx-auto w-max" onClick={(event) => event.stopPropagation()}>
               <Image
                 src={selectedDetail.src}
                 alt={selectedDetail.alt}
@@ -447,7 +393,7 @@ function DetailGrid() {
         </div>
       ) : null}
     </section>
-  );
+  )
 }
 
 function SizeGuide() {
@@ -459,7 +405,7 @@ function SizeGuide() {
           <table className="w-full min-w-[620px] border-collapse font-body">
             <thead>
               <tr className="border-b border-gold">
-                {["Tamanho", "Peito (cm)", "Comprimento (cm)", "Ombro (cm)"].map((head) => (
+                {['Tamanho', 'Peito (cm)', 'Comprimento (cm)', 'Ombro (cm)'].map((head) => (
                   <th
                     key={head}
                     className="px-4 py-3 text-left font-ui text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-muted"
@@ -471,7 +417,10 @@ function SizeGuide() {
             </thead>
             <tbody>
               {sizeGuide.map((row, index) => (
-                <tr key={row.label} className={cn(index < sizeGuide.length - 1 && "border-b border-black/10")}>
+                <tr
+                  key={row.label}
+                  className={cn(index < sizeGuide.length - 1 && 'border-b border-black/10')}
+                >
                   <td className="px-4 py-4 font-display text-base font-semibold tracking-[0.14em] text-navy">
                     {row.label}
                   </td>
@@ -485,18 +434,24 @@ function SizeGuide() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function Reviews() {
   return (
-    <section id="avaliacoes" className="graphite-surface relative px-5 py-20 text-offwhite md:px-9 md:py-24">
+    <section
+      id="avaliacoes"
+      className="graphite-surface relative px-5 py-20 text-offwhite md:px-9 md:py-24"
+    >
       <div className="noise-overlay" />
       <div className="relative mx-auto max-w-[1280px]">
         <SectionHead align="center" dark eyebrow="Avaliações" title="Quem veste, recomenda" />
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {reviews.map((review) => (
-            <article key={review.name} className="rounded-lg border border-gold/25 bg-navy/35 p-7 md:p-8">
+            <article
+              key={review.name}
+              className="rounded-lg border border-gold/25 bg-navy/35 p-7 md:p-8"
+            >
               <div className="mb-5 flex gap-1 text-gold">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <Star key={index} className="size-4 fill-current" strokeWidth={1.5} />
@@ -512,11 +467,11 @@ function Reviews() {
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function FAQ() {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(0)
 
   return (
     <section id="faq" className="bg-offwhite px-5 py-20 md:px-9 md:py-24">
@@ -524,7 +479,7 @@ function FAQ() {
         <SectionHead align="center" eyebrow="Perguntas frequentes" title="FAQ" />
         <div className="mt-10">
           {faqs.map((item, index) => {
-            const isOpen = open === index;
+            const isOpen = open === index
 
             return (
               <div key={item.question} className="border-b border-black/10">
@@ -533,7 +488,9 @@ function FAQ() {
                   onClick={() => setOpen(isOpen ? -1 : index)}
                   className="flex w-full items-center justify-between gap-4 py-6 text-left"
                 >
-                  <span className="headline text-[clamp(0.9rem,2vw,1rem)] text-navy">{item.question}</span>
+                  <span className="headline text-[clamp(0.9rem,2vw,1rem)] text-navy">
+                    {item.question}
+                  </span>
                   {isOpen ? (
                     <Minus className="size-5 shrink-0 text-gold-deep" strokeWidth={1.5} />
                   ) : (
@@ -542,8 +499,8 @@ function FAQ() {
                 </button>
                 <div
                   className={cn(
-                    "grid transition-[grid-template-rows] duration-[240ms] ease-magn",
-                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    'grid transition-[grid-template-rows] duration-[240ms] ease-magn',
+                    isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
                   )}
                 >
                   <div className="min-h-0 overflow-hidden">
@@ -553,12 +510,12 @@ function FAQ() {
                   </div>
                 </div>
               </div>
-            );
+            )
           })}
         </div>
       </div>
     </section>
-  );
+  )
 }
 
 function FinalCTA() {
@@ -581,15 +538,21 @@ function FinalCTA() {
         </ButtonLink>
       </div>
     </section>
-  );
+  )
 }
 
 export function Footer() {
   const columns = [
-    { title: "Produto", items: ["Coleção Classic", "Edição Premium", "Guia de medidas", "Cuidados"] },
-    { title: "Atendimento", items: ["Política de troca", "Política de privacidade", "Termos de uso", "FAQ"] },
-    { title: "Contato", items: ["contato@magnossao.com", "Instagram", "São Paulo, Brasil"] }
-  ];
+    {
+      title: 'Produto',
+      items: ['Coleção Classic', 'Edição Premium', 'Guia de medidas', 'Cuidados'],
+    },
+    {
+      title: 'Atendimento',
+      items: ['Política de troca', 'Política de privacidade', 'Termos de uso', 'FAQ'],
+    },
+    { title: 'Contato', items: ['contato@magnossao.com', 'Instagram', 'São Paulo, Brasil'] },
+  ]
 
   return (
     <footer className="bg-black px-5 py-16 text-[#C9CFD8] md:px-9">
@@ -631,5 +594,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }
