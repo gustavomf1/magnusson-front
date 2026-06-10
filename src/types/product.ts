@@ -12,6 +12,7 @@ export type CorDto = {
   nome: string
   token: string
   hex: string
+  imagens: ImagemDto[]
 }
 
 export type TamanhoDto = {
@@ -94,7 +95,6 @@ export type Produto = {
   descricaoSeo: string | null
   status: 'RASCUNHO' | 'PUBLICADO' | 'ARQUIVADO'
   categoria: Categoria | null
-  imagens: ImagemDto[]
   cores: CorDto[]
   tamanhos: TamanhoDto[]
   skus: SkuDto[]
